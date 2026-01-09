@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-modbus"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+keywords = ["modbus", "industrial", "plc", "scada", "iot"]
+categories = ["network-programming", "embedded"]
+description = "Modbus TCP/RTU protocol driver for TRAP industrial IoT gateway"
+
+[dependencies]
+# Internal crates
+trap-core = { workspace = true }
+
+# Async runtime
+tokio = { workspace = true }
+async-trait = { workspace = true }
+futures = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+humantime-serde = "1.1"
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Time
+chrono = { workspace = true }
+humantime = "2.1"
+
+# Modbus protocol
+tokio-modbus = "0.16"
+
+# Serial port (for RTU)
+tokio-serial = "5.4"
+
+# Byte order conversion
+byteorder = "1.5"
+
+# Random (for jitter)
+rand = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }
+mockall = { workspace = true }
+
+[features]
+default = ["tcp", "rtu"]
+tcp = []
+rtu = []
+
+[lints.rust]
+missing_docs = "warn"
+unsafe_code = "deny"
