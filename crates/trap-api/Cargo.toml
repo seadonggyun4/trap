@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-api"
+description = "REST API server for TRAP industrial protocol gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+default = ["tls"]
+# TLS support
+tls = ["rustls", "rustls-pemfile"]
+# Rate limiting
+rate-limit = ["governor"]
+
+[dependencies]
+trap-core = { workspace = true }
+trap-config = { workspace = true }
+trap-buffer = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Date/Time
+chrono = { workspace = true }
+
+# UUID
+uuid = { workspace = true }
+
+# API Server
+axum = { workspace = true }
+tower = { workspace = true }
+tower-http = { workspace = true }
+hyper = { workspace = true }
+hyper-util = { workspace = true }
+
+# Security
+jsonwebtoken = { workspace = true }
+
+# TLS (optional)
+rustls = { workspace = true, optional = true }
+rustls-pemfile = { workspace = true, optional = true }
+
+# Rate Limiting (optional)
+governor = { workspace = true, optional = true }
+
+# Concurrency
+dashmap = { workspace = true }
+
+# Metrics
+prometheus = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
