@@ -1,0 +1,67 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-tests"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Integration tests for TRAP industrial protocol gateway"
+publish = false
+
+# =============================================================================
+# Dependencies
+# =============================================================================
+
+[dependencies]
+# Internal crates
+trap-core = { workspace = true }
+trap-config = { workspace = true }
+trap-buffer = { workspace = true }
+trap-api = { workspace = true }
+
+# Async runtime
+tokio = { workspace = true, features = ["full", "test-util"] }
+async-trait = { workspace = true }
+
+# Testing utilities
+tempfile = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Date & Time
+chrono = { workspace = true }
+
+# Axum for API testing
+axum = { workspace = true }
+
+# Tracing
+tracing = { workspace = true }
+
+# =============================================================================
+# Integration Tests
+# =============================================================================
+# Run all tests: cargo test -p trap-tests
+# Run specific test: cargo test -p trap-tests --test integration_core
+
+[[test]]
+name = "integration_core"
+path = "tests/integration_core.rs"
+
+[[test]]
+name = "integration_buffer"
+path = "tests/integration_buffer.rs"
+
+[[test]]
+name = "integration_config"
+path = "tests/integration_config.rs"
+
+[[test]]
+name = "integration_api"
+path = "tests/integration_api.rs"
