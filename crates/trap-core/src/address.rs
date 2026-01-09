@@ -18,12 +18,8 @@
 //! ```
 //! use trap_core::address::{Address, ModbusAddress, ModbusRegisterType};
 //!
-//! // Create a Modbus holding register address
-//! let addr = Address::Modbus(ModbusAddress {
-//!     register_type: ModbusRegisterType::HoldingRegister,
-//!     address: 100,
-//!     count: 1,
-//! });
+//! // Create a Modbus holding register address using the constructor
+//! let addr = Address::Modbus(ModbusAddress::holding_register(100));
 //!
 //! assert!(addr.is_modbus());
 //! ```
