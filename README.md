@@ -5,7 +5,7 @@
 <h1 align="center">TRAP</h1>
 
 <p align="center">
-  <strong>Transparent Rust Adapter for industrial Protocols</strong>
+  <strong>Transparent Rust Gateway for industrial Protocols</strong>
 </p>
 
 <p align="center">
