@@ -1,0 +1,54 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-buffer"
+description = "Offline buffering and data persistence for TRAP industrial protocol gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+default = ["rocksdb-backend"]
+# RocksDB persistent storage backend
+rocksdb-backend = ["rocksdb"]
+# In-memory backend (for testing)
+memory-backend = []
+
+[dependencies]
+trap-core = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+async-trait = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+bincode = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Date/Time
+chrono = { workspace = true }
+
+# Metrics
+prometheus = { workspace = true }
+
+# Storage (optional)
+rocksdb = { workspace = true, optional = true }
+
+# Random
+rand = { workspace = true }
+
+# HTTP Client (for flush)
+reqwest = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }
