@@ -52,6 +52,7 @@
 // =============================================================================
 
 pub mod address;
+pub mod converter;
 pub mod error;
 pub mod types;
 
@@ -160,6 +161,23 @@ pub use retry::{
 pub use hooks::{
     CollectorHandler, DriverEvent, EventDispatcher, EventHandler, FilterHandler, HookCallback,
     HookContext, HookRegistry, ObservableOperations, TracingHandler, TracingLevel,
+};
+
+// Re-export converter types
+pub use converter::{
+    // Core traits and types
+    RegisterConverter, ErasedConverter, ConverterRegistry,
+    ConversionContext, ConversionError, ConversionResult,
+    // Byte order
+    ByteOrder as ConverterByteOrder, StringEncoding,
+    // Built-in converters
+    BoolConverter, NumericConverter, ScaledConverter,
+    StringConverter, BytesConverter,
+    CompositeConverter, CompositeConverterBuilder, CompositeField,
+    TypedConverterWrapper,
+    // Helper functions
+    registers_to_bytes, bytes_to_registers,
+    extract_bit, set_bit, extract_bits,
 };
 
 /// Crate version
