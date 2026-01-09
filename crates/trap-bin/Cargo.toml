@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-bin"
+description = "CLI binary for TRAP industrial protocol gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "trap"
+path = "src/main.rs"
+
+[features]
+default = ["full"]
+full = ["trap-api/tls", "trap-api/rate-limit", "trap-buffer/rocksdb-backend"]
+
+[dependencies]
+trap-core = { workspace = true }
+trap-config = { workspace = true, features = ["encryption"] }
+trap-buffer = { workspace = true }
+trap-api = { workspace = true }
+
+# Async
+tokio = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+anyhow = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true }
+
+# CLI
+clap = { workspace = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
