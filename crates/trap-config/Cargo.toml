@@ -1,0 +1,47 @@
+# SPDX-License-Identifier: PolyForm-Noncommercial-1.0.0
+# Copyright (c) 2025 Sylvex. All rights reserved.
+
+[package]
+name = "trap-config"
+description = "Configuration management for TRAP industrial protocol gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[features]
+default = []
+# Enable encryption for sensitive config values
+encryption = ["dep:aes-gcm", "dep:base64", "dep:argon2"]
+
+[dependencies]
+trap-core = { workspace = true }
+
+# Serialization
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Error handling
+thiserror = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Configuration
+config = { workspace = true }
+
+# Date/Time
+chrono = { workspace = true }
+
+# TOML parsing
+toml = "0.8"
+
+# Encryption (optional)
+aes-gcm = { workspace = true, optional = true }
+base64 = { workspace = true, optional = true }
+argon2 = { workspace = true, optional = true }
+
+[dev-dependencies]
+tokio-test = { workspace = true }
+tempfile = { workspace = true }
