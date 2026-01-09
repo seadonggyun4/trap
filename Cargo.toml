@@ -23,6 +23,7 @@ trap-core = { path = "crates/trap-core" }
 trap-config = { path = "crates/trap-config" }
 trap-buffer = { path = "crates/trap-buffer" }
 trap-api = { path = "crates/trap-api" }
+trap-modbus = { path = "crates/trap-modbus" }
 
 # =============================================================================
 # Async Runtime
