@@ -10,17 +10,25 @@ license.workspace = true
 repository.workspace = true
 authors.workspace = true
 
+[lib]
+name = "trap_bin"
+path = "src/lib.rs"
+
 [[bin]]
 name = "trap"
 path = "src/main.rs"
 
 [features]
 default = ["full"]
-full = ["trap-api/tls", "trap-api/rate-limit", "trap-buffer/rocksdb-backend"]
+full = ["tls", "rate-limit", "rocksdb-backend", "encryption"]
+tls = ["trap-api/tls"]
+rate-limit = ["trap-api/rate-limit"]
+rocksdb-backend = ["trap-buffer/rocksdb-backend"]
+encryption = ["trap-config/encryption"]
 
 [dependencies]
 trap-core = { workspace = true }
-trap-config = { workspace = true, features = ["encryption"] }
+trap-config = { workspace = true }
 trap-buffer = { workspace = true }
 trap-api = { workspace = true }
 
@@ -29,6 +37,7 @@ tokio = { workspace = true }
 
 # Serialization
 serde = { workspace = true }
+serde_json = { workspace = true }
 
 # Error handling
 thiserror = { workspace = true }
@@ -40,6 +49,10 @@ tracing-subscriber = { workspace = true }
 
 # CLI
 clap = { workspace = true }
+
+# Platform-specific
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
 
 [dev-dependencies]
 tokio-test = { workspace = true }
