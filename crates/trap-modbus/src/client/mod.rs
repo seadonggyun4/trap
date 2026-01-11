@@ -60,11 +60,13 @@
 
 mod transport;
 mod tcp;
+mod rtu;
 mod conversion;
 mod retry;
 
 pub use transport::{ModbusTransport, TransportState};
 pub use tcp::ModbusTcpTransport;
+pub use rtu::ModbusRtuTransport;
 pub use conversion::{
     DataConverter, ConversionResult, ExtendedDataConverter,
     TagConverterConfig, TagConverterConfigBuilder,

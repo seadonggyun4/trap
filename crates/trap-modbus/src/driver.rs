@@ -24,10 +24,10 @@ use trap_core::types::{Protocol, Value};
 use trap_core::Address;
 
 use crate::client::{
-    ModbusClient, ModbusTcpTransport, RetryConfig, TransportState, TypedValue,
+    ModbusClient, ModbusRtuTransport, ModbusTcpTransport, RetryConfig, TransportState, TypedValue,
 };
 use crate::error::ModbusError;
-use crate::types::{ModbusConfig, ModbusDataAddress, ModbusTcpConfig, TagMapping};
+use crate::types::{ModbusConfig, ModbusDataAddress, ModbusRtuConfig, ModbusTcpConfig, TagMapping};
 
 // =============================================================================
 // ModbusDriver
@@ -77,36 +77,43 @@ pub struct ModbusDriver {
 enum ModbusClientHandle {
     /// TCP client.
     Tcp(ModbusClient<ModbusTcpTransport>),
+    /// RTU client.
+    Rtu(ModbusClient<ModbusRtuTransport>),
 }
 
 impl ModbusClientHandle {
     async fn connect(&self) -> Result<(), ModbusError> {
         match self {
             Self::Tcp(client) => client.connect().await,
+            Self::Rtu(client) => client.connect().await,
         }
     }
 
     async fn disconnect(&self) -> Result<(), ModbusError> {
         match self {
             Self::Tcp(client) => client.disconnect().await,
+            Self::Rtu(client) => client.disconnect().await,
         }
     }
 
     async fn is_connected(&self) -> bool {
         match self {
             Self::Tcp(client) => client.is_connected().await,
+            Self::Rtu(client) => client.is_connected().await,
         }
     }
 
     async fn state(&self) -> TransportState {
         match self {
             Self::Tcp(client) => client.state().await,
+            Self::Rtu(client) => client.state().await,
         }
     }
 
     async fn read_typed(&self, addr: &ModbusDataAddress) -> Result<TypedValue, ModbusError> {
         match self {
             Self::Tcp(client) => client.read_typed(addr).await,
+            Self::Rtu(client) => client.read_typed(addr).await,
         }
     }
 
@@ -117,6 +124,7 @@ impl ModbusClientHandle {
     ) -> Result<(), ModbusError> {
         match self {
             Self::Tcp(client) => client.write_typed(addr, value).await,
+            Self::Rtu(client) => client.write_typed(addr, value).await,
         }
     }
 }
@@ -127,6 +135,18 @@ impl ModbusDriver {
         Self {
             name,
             config: ModbusConfig::Tcp(config),
+            tag_mappings: Arc::new(RwLock::new(HashMap::new())),
+            client: Arc::new(Mutex::new(None)),
+            health: Arc::new(RwLock::new(HealthStatus::default())),
+            retry_config: RetryConfig::default(),
+        }
+    }
+
+    /// Creates a new RTU Modbus driver.
+    pub fn rtu(config: ModbusRtuConfig, name: String) -> Self {
+        Self {
+            name,
+            config: ModbusConfig::Rtu(config),
             tag_mappings: Arc::new(RwLock::new(HashMap::new())),
             client: Arc::new(Mutex::new(None)),
             health: Arc::new(RwLock::new(HealthStatus::default())),
@@ -279,8 +299,12 @@ impl ProtocolDriver for ModbusDriver {
                         .with_byte_order(tcp_config.byte_order);
                 ModbusClientHandle::Tcp(modbus_client)
             }
-            ModbusConfig::Rtu(_rtu_config) => {
-                return Err(DriverError::protocol("RTU support not yet implemented"));
+            ModbusConfig::Rtu(rtu_config) => {
+                let transport = ModbusRtuTransport::new(rtu_config.clone());
+                let modbus_client =
+                    ModbusClient::with_retry(transport, self.retry_config.clone())
+                        .with_byte_order(rtu_config.byte_order);
+                ModbusClientHandle::Rtu(modbus_client)
             }
         };
 
